@@ -86,3 +86,7 @@ body {
 .cell.o {
   color: red;
 }
+
+.text-choose {
+  text-decoration: none;
+}
