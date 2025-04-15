@@ -4,8 +4,7 @@
     <button id="undo">Undo</button>
     <button id="expand">Expand</button>
     <button id="new-game">New Game</button>
-    <button id="computer-al">Play with Al</button>
-    <button id="person">Play with friend</button>
+    <a href="/play/playWithFriend"><button id="person">Play with friend</button></a>
   </div>
 </div>
 <div class="board-container">
@@ -100,6 +99,21 @@
   return moves[Math.floor(Math.random() * moves.length)];
 }
 
+// hàm lấy các bước di chuyển
+function getAvailabeMoves() {
+  const moves = []
+  for(let row = 0; row < boardSize; row++) {
+    for(let col = 0; col < boardSize; col++) {
+      const key = `${row},${col}`;
+      if(boardState[key] === null && hasNeighbor(row, col)) {
+        moves.push({ row, col });
+      }
+    }
+  }
+}
+
+
+// Kiểm tra có ô xung quanh đã đánh chưa 
 function hasNeighbor(row, col) {
   for (let dx = -1; dx <= 1; dx++) {
     for (let dy = -1; dy <= 1; dy++) {
@@ -112,21 +126,25 @@ function hasNeighbor(row, col) {
   return false;
 }
 
-  function undoMove() {
-    if (moveHistory.length > 0) {
-      const lastMove = moveHistory.pop();
-      const cellId = `${lastMove.row},${lastMove.col}`;
-      boardState[cellId] = null;
+// Hàm đánh giá độ thông minh
 
-      const cell = document.getElementById(`cell-${lastMove.row}-${lastMove.col}`);
-      if (cell) {
-        cell.textContent = '';
-        cell.classList.remove(lastMove.player.toLowerCase());
-      }
 
-      currentPlayer = lastMove.player;
+
+
+function undoMove() {
+  if (moveHistory.length > 0) {
+    const lastMove = moveHistory.pop();
+    const cellId = `${lastMove.row},${lastMove.col}`;
+    boardState[cellId] = null;
+
+    const cell = document.getElementById(`cell-${lastMove.row}-${lastMove.col}`);
+    if (cell) {
+      cell.textContent = '';
+      cell.classList.remove(lastMove.player.toLowerCase());
     }
+    currentPlayer = lastMove.player;
   }
+}
 
   function expandBoard() {
     const oldSize = boardSize;
@@ -167,6 +185,7 @@ function hasNeighbor(row, col) {
     currentPlayer = 'X';
   }
 
+  // cập nhật số ô trong bảng
   function updateGridStyle() {
     const containerSize = 560;
     const cellSize = Math.floor((containerSize - (boardSize - 1) * 2) / boardSize);
@@ -186,6 +205,8 @@ function hasNeighbor(row, col) {
   expandBtn.addEventListener('click', expandBoard);
   newGameBtn.addEventListener('click', newGame);
 
+
+  // Kiểm tra chiến thắng
   function checkWin(row, col, player) {
     const directions = [
       { dx: 0, dy: 1 },  // ngang
