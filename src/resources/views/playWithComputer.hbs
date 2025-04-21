@@ -81,26 +81,32 @@
     if (cell) handleCellClick(cell, row, col);
   }
 
-  function findBestMove(player) {
-  // Lấy tất cả các ô trống có lân cận người chơi
-  let moves = [];
-  for (let row = 0; row < boardSize; row++) {
-    for (let col = 0; col < boardSize; col++) {
-      const cellId = `${row},${col}`;
-      if (boardState[cellId] === null && hasNeighbor(row, col)) {
-        moves.push({ row, col });
-      }
+
+function findBestMove(player) {
+  let bestScore = -Infinity;
+  let bestMove = null;
+
+  const moves = getAvailableMoves();
+  for (const move of moves) {
+    const key = `${move.row},${move.col}`;
+    boardState[key] = player;
+
+    const score = minimax(2, false, -Infinity, Infinity); // depth có thể tăng lên
+
+    boardState[key] = null;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMove = move;
     }
   }
 
-  if (moves.length === 0) return null;
-  
-  // Tạm thời: chọn ngẫu nhiên
-  return moves[Math.floor(Math.random() * moves.length)];
+  return bestMove;
 }
 
+
 // hàm lấy các bước di chuyển
-function getAvailabeMoves() {
+function getAvailableMoves() {
   const moves = []
   for(let row = 0; row < boardSize; row++) {
     for(let col = 0; col < boardSize; col++) {
@@ -110,6 +116,7 @@ function getAvailabeMoves() {
       }
     }
   }
+  return moves;
 }
 
 
@@ -127,7 +134,88 @@ function hasNeighbor(row, col) {
 }
 
 // Hàm đánh giá độ thông minh
+function evaluateBoard(player) {
+  const lines = getLines();
+  let score = 0;
+  for ( const line of lines ) {
+    const lineStr = line.map(cell => boardState[cell] || '.').join('');
+    score += evaluateLine(lineStr, player);
+  }
+  return score
+}
 
+function evaluateLine(lineStr, player) {
+  const opponent = player === 'O' ? 'X' : 'O';
+  if (lineStr.includes(opponent)) return 0;
+
+  const count = (lineStr.match(new RegExp(player, 'g')) || []).length;
+  if (count === 5) return 10000;
+  if (count === 4) return 1000;
+  if (count === 3) return 100;
+  if (count === 2) return 10;
+  return 1;
+}
+
+function getLines() {
+  const lines = [];
+  const directions = [
+    { dx: 0, dy: 1 },  // ngang
+    { dx: 1, dy: 0 },  // dọc
+    { dx: 1, dy: 1 },  // chéo xuôi
+    { dx: 1, dy: -1 }  // chéo ngược
+  ];
+  for (let row = 0; row < boardSize; row++) {
+    for (let col = 0; col < boardSize; col++) {
+      for (const { dx, dy } of directions) {
+        const line = [];
+        for (let i = 0; i < 5; i++) {
+          const r = row + dx * i;
+          const c = col + dy * i;
+          if (r >= 0 && r < boardSize && c >= 0 && c < boardSize) {
+            line.push(`${r},${c}`);
+          }
+        }
+        if (line.length === 5) lines.push(line);
+      }
+    }
+  }
+
+  return lines;
+}
+
+
+// hàm minimax
+function minimax(depth, isMaximizing, alpha, beta) {
+  if (depth === 0) {
+    return evaluateBoard('O') - evaluateBoard('X');
+  }
+
+  const moves = getAvailableMoves();
+  if (moves.length === 0) return 0;
+
+  let bestScore = isMaximizing ? -Infinity : Infinity;
+
+  for (const move of moves) {
+    const key = `${move.row},${move.col}`;
+    boardState[key] = isMaximizing ? 'O' : 'X';
+
+    const score = minimax(depth - 1, !isMaximizing, alpha, beta);
+
+    boardState[key] = null;
+
+    if (isMaximizing) {
+      bestScore = Math.max(bestScore, score);
+      alpha = Math.max(alpha, score);
+    } else {
+      bestScore = Math.min(bestScore, score);
+      beta = Math.min(beta, score);
+    }
+
+    if (beta <= alpha) break;
+  }
+
+  return bestScore;
+}
 
 
 
