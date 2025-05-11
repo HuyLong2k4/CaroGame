@@ -17,13 +17,16 @@
         <div class="pwc-side-background right-side"></div>
     </div>
 </div>
-<div id="winner-modal" class="modal hidden">
-  <div class="modal-content">
-    <div class="winner-icon" id="winner-icon">🏆</div>
-    <h2 id="winner-message">Player X wins!</h2>
-    <button onclick="closeModal()">OK</button>
+<!-- Hương thông báo chiến thắng -->
+<div id="winnerMessage" class="winner-message" style="display: none;">
+  <div class="victory-text">🏆 WINNER 🏆</div>
+  <div id="playerName" class="player-name"></div>
+  <div class="button-group">
+    <button class="winner-button" onclick="hideWinnerMessage()">🔁 Play Again</button>
+    <button class="winner-button" onclick="goToMenu()">🏠 Menu</button>
   </div>
 </div>
+<div id="winnerOverlay" class="winner-overlay" style="display: none;"></div>
 </body>
 <script>
   const board = document.getElementById('board');
@@ -328,6 +331,9 @@ function undoMove() {
       }
 
       if(count >= 5) {
+        setTimeout(() => {
+                showWinner(player);
+            }, 10);
         return true;
       }
     }
@@ -336,15 +342,19 @@ function undoMove() {
   }
 
   initializeBoard();
-function showWinner(winner) {
-  const message = document.getElementById("winner-message");
-  const modal = document.getElementById("winner-modal");
-  message.textContent = `Player ${winner} wins!`;
-  message.style.color = winner === "X" ? "#007bff" : "#dc3545";
-  modal.classList.remove("hidden");
+ // hương thêm
+ function showWinner(player) {
+  const playerName = document.getElementById('playerName');
+  playerName.textContent = `PLAYER ${player}`;
+  document.getElementById('winnerMessage').style.display = 'block';
 }
-function closeModal() {
-  document.getElementById("winner-modal").classList.add("hidden");
+function hideWinnerMessage() {
+  document.getElementById('board').style.display = 'grid'; 
+  document.getElementById('winnerMessage').style.display = "none";
+  newGame();
+}
+function goToMenu() {
+  window.location.href = "/";
 }
 
 </script>
