@@ -1,16 +1,30 @@
-<div class="header">
-  <div class="title">Caro Game</div>
-  <div class="controls">
-    <button id="undo">Undo</button>
-    <button id="expand">Expand</button>
-    <button id="new-game">New Game</button>
-    <a href="/play/playWithFriend"><button id="person">Play with friend</button></a>
+<body class="pwc">
+<div class="pwc-game-container">
+    <div class="pwc-header">
+        <div class="pwc-title">Caro Game</div>
+        <div class="pwc-controls">
+            <button id="undo">Undo</button>
+            <button id="expand">Expand</button>
+            <button id="new-game">New Game</button>
+            <a href="/play/playWithFriend"><button id="person">Play with friend</button></a>
+        </div>
+    </div>
+    <div class="pwc-board-wrapper">
+        <div class="pwc-side-background left-side"></div>
+        <div class="pwc-board-container">
+            <div class="pwc-board" id="board"></div>
+        </div>
+        <div class="pwc-side-background right-side"></div>
+    </div>
+</div>
+<div id="winner-modal" class="modal hidden">
+  <div class="modal-content">
+    <div class="winner-icon" id="winner-icon">🏆</div>
+    <h2 id="winner-message">Player X wins!</h2>
+    <button onclick="closeModal()">OK</button>
   </div>
 </div>
-<div class="board-container">
-  <div class="board" id="board"></div>
-</div>
-
+</body>
 <script>
   const board = document.getElementById('board');
   const undoBtn = document.getElementById('undo');
@@ -58,7 +72,7 @@
 
       if (checkWin(row, col, currentPlayer)) {
         setTimeout(() => {
-          alert(`Player ${currentPlayer} wins!`);
+         showWinner(currentPlayer);
           newGame();
         }, 10);
         return;
@@ -80,7 +94,6 @@
     const cell = document.getElementById(`cell-${row}-${col}`);
     if (cell) handleCellClick(cell, row, col);
   }
-
 
 function findBestMove(player) {
   let bestScore = -Infinity;
@@ -104,7 +117,6 @@ function findBestMove(player) {
   return bestMove;
 }
 
-
 // hàm lấy các bước di chuyển
 function getAvailableMoves() {
   const moves = []
@@ -118,7 +130,6 @@ function getAvailableMoves() {
   }
   return moves;
 }
-
 
 // Kiểm tra có ô xung quanh đã đánh chưa 
 function hasNeighbor(row, col) {
@@ -183,7 +194,6 @@ function getLines() {
   return lines;
 }
 
-
 // hàm minimax
 function minimax(depth, isMaximizing, alpha, beta) {
   if (depth === 0) {
@@ -216,8 +226,6 @@ function minimax(depth, isMaximizing, alpha, beta) {
 
   return bestScore;
 }
-
-
 
 function undoMove() {
   if (moveHistory.length > 0) {
@@ -293,7 +301,6 @@ function undoMove() {
   expandBtn.addEventListener('click', expandBoard);
   newGameBtn.addEventListener('click', newGame);
 
-
   // Kiểm tra chiến thắng
   function checkWin(row, col, player) {
     const directions = [
@@ -329,4 +336,15 @@ function undoMove() {
   }
 
   initializeBoard();
+function showWinner(winner) {
+  const message = document.getElementById("winner-message");
+  const modal = document.getElementById("winner-modal");
+  message.textContent = `Player ${winner} wins!`;
+  message.style.color = winner === "X" ? "#007bff" : "#dc3545";
+  modal.classList.remove("hidden");
+}
+function closeModal() {
+  document.getElementById("winner-modal").classList.add("hidden");
+}
+
 </script>

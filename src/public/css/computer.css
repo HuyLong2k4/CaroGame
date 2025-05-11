@@ -1,0 +1,217 @@
+* {
+  box-sizing: border-box;
+}
+
+body.pwc{
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  background: url('./images/462134224_8455924154500339_5301735146113381509_n.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: 0;
+}
+
+.pwc-game-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pwc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.pwc-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+}
+
+.pwc-controls {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.pwc-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(45deg, #007bff, #00c4ff);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.pwc-controls button:hover {
+  background: linear-gradient(45deg, #0056b3, #0096cc);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.pwc-controls button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.pwc-controls a {
+  text-decoration: none;
+}
+
+.pwc-controls a button {
+  width: 100%;
+}
+
+.pwc-board-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.pwc-board-container {
+  width: 560px;
+  height: 560px;
+  margin: 20px 0;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.pwc-board {
+  display: grid;
+  gap: 0;
+  background-color: #333;
+  width: 100%;
+  height: 100%;
+  border: 4px solid #222;
+  border-radius: 8px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pwc .cell {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+  border: 1px solid #666;
+  user-select: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.pwc .cell:nth-child(15n) {
+  border-right: 1px solid #666;
+}
+
+.pwc .cell:nth-last-child(-n+15) {
+  border-bottom: 1px solid #666;
+}
+
+.pwc .cell:hover {
+    background-color: #ddd;
+}
+
+.pwc .cell.x {
+ color: blue;
+}
+
+.pwc .cell.o {
+    color: red;
+}
+/* hiển thị cửa số winer */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); 
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; 
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal:not(.hidden) {
+  opacity: 1;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2); 
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  width: 90%;
+  transform: scale(0.8);
+  animation: popUp 0.3s ease forwards; 
+}
+
+@keyframes popUp {
+  to {
+    transform: scale(1);
+  }
+}
+
+.modal-content h2 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2::before {
+  content: "🏆 "; 
+  font-size: 1.2em;
+}
+
+.modal-content button {
+  background: linear-gradient(to right, #ff6f61, #ff9472); /* Gradient cho nút */
+  border: none;
+  padding: 10px 30px;
+  border-radius: 25px;
+  color: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 111, 97, 0.4);
+}
+
+.modal-content button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
