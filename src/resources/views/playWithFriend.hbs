@@ -1,15 +1,23 @@
-<div class="header">
-  <div class="title">Caro Game</div>
-  <div class="controls">
-    <button id="undo">Undo</button>
-    <button id="expand">Expand</button>
-    <button id="new-game">New Game</button>
-    <a href="/play/playWithComputer"><button id="computer-al">Play with Computer</button></a>
-  </div>
+<body class="pwf">
+<div class="pwf-game-container">
+    <div class="pwf-header">
+        <div class="pwf-title">Caro Game</div>
+        <div class="pwf-controls">
+            <button id="undo">Undo</button>
+            <button id="expand">Expand</button>
+            <button id="new-game">New Game</button>
+            <a href="/play/playWithComputer"><button id="computer-al">Play with Computer</button></a>
+        </div>
+    </div>
+    <div class="pwf-board-wrapper">
+        <div class="pwf-side-background left-side"></div>
+        <div class="pwf-board-container">
+            <div class="pwf-board" id="board"></div>
+        </div>
+        <div class="pwf-side-background right-side"></div>
+    </div>
 </div>
-<div class="board-container">
-  <div class="board" id="board"></div>
-</div>
+</body>
 
 <script>
   const board = document.getElementById('board');
