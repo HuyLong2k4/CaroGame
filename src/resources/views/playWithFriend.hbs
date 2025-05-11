@@ -1,24 +1,4 @@
-<<<<<<< HEAD
-<div class="header">
-  <div class="title">Caro Game</div>
-  <div class="controls">
-    <button id="undo">Undo</button>
-    <button id="expand">Expand</button>
-    <button id="new-game">New Game</button>
-    <a href="/play/playWithComputer"><button id="computer-al">Play with Computer</button></a>
-  </div>
-</div>
-<div id="winnerMessage" class="winner-message" style="display: none;">
-  <div class="victory-text">🏆 WINNER 🏆</div>
-  <div id="playerName" class="player-name"></div>
-  <div class="button-group">
-    <button class="winner-button" onclick="hideWinnerMessage()">🔁 Play Again</button>
-    <button class="winner-button" onclick="goToMenu()">🏠 Menu</button>
-  </div>
-</div>
-<div class="board-container">
-  <div class="board" id="board"></div>
-=======
+
 <body class="pwf">
 <div class="pwf-game-container">
     <div class="pwf-header">
@@ -39,6 +19,15 @@
     </div>
 >>>>>>> 47bb114cbd7fb399f79a68230ccd2f5dc767d559
 </div>
+<div id="winnerMessage" class="winner-message" style="display: none;">
+  <div class="victory-text">🏆 WINNER 🏆</div>
+  <div id="playerName" class="player-name"></div>
+  <div class="button-group">
+    <button class="winner-button" onclick="hideWinnerMessage()">🔁 Play Again</button>
+    <button class="winner-button" onclick="goToMenu()">🏠 Menu</button>
+  </div>
+</div>
+<div id="winnerOverlay" class="winner-overlay" style="display: none;"></div>
 </body>
 
 <script>
