@@ -7,6 +7,17 @@
     <a href="/play/playWithFriend"><button id="person">Play with friend</button></a>
   </div>
 </div>
+<!--hương thông báo chiến thắng -->
+<div id="winnerMessage" class="winner-message" style="display: none;">
+  <div class="victory-text">🏆 WINNER 🏆</div>
+  <div id="playerName" class="player-name"></div>
+  <div class="button-group">
+    <button class="winner-button" onclick="hideWinnerMessage()">🔁 Play Again</button>
+    <button class="winner-button" onclick="goToMenu()">🏠 Menu</button>
+  </div>
+</div>
+<div id="winnerOverlay" class="winner-overlay" style="display: none;"></div>
+<!--hết -->
 <div class="board-container">
   <div class="board" id="board"></div>
 </div>
@@ -58,7 +69,7 @@
 
       if (checkWin(row, col, currentPlayer)) {
         setTimeout(() => {
-          alert(`Player ${currentPlayer} wins!`);
+          showWinner(currentPlayer); //hương thêm
           newGame();
         }, 10);
         return;
@@ -319,14 +330,31 @@ function undoMove() {
         count++;
         i++;
       }
-
-      if(count >= 5) {
+      if(count >= 5) { 
+        //hương thêm
+        setTimeout(() => {
+                showWinner(player);
+            }, 10);//hết
         return true;
       }
     }
 
     return false;
   }
-
+  // hương thêm
+ function showWinner(player) {
+  const playerName = document.getElementById('playerName');
+  playerName.textContent = `PLAYER ${player}`;
+  document.getElementById('winnerMessage').style.display = 'block';
+}
+function hideWinnerMessage() {
+  document.getElementById('board').style.display = 'grid'; 
+  document.getElementById('winnerMessage').style.display = "none";
+  newGame();
+}
+function goToMenu() {
+  window.location.href = "/play";
+}
+//hết
   initializeBoard();
 </script>
